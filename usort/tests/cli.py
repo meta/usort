@@ -211,6 +211,19 @@ import os
         )
         self.assertEqual(result.exit_code, 0)
 
+    def test_list_imports_missing_file(self) -> None:
+        with sample_contents("import sys\n") as dtmp:
+            runner = CliRunner()
+            with chdir(dtmp):
+                result = runner.invoke(
+                    main, ["list-imports", "missing.py", "sample.py"]
+                )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("missing.py", result.output)
+        self.assertNotIn("Traceback", result.output)
+        self.assertIn("sample.py 1 blocks:", result.output)
+
     def test_format_no_change(self) -> None:
         with sample_contents("import sys\n") as dtmp:
             runner = CliRunner()

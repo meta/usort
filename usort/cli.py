@@ -81,8 +81,8 @@ def list_imports(multiples: bool, debug: bool, paths: List[Path]) -> int:
 
     for path in paths:
         config = Config.find(path)
-        mod = try_parse(path)
         try:
+            mod = try_parse(path)
             sorter = ImportSorter(module=mod, path=path, config=config)
             blocks = sorter.sortable_blocks(mod.body)
         except Exception as e:
